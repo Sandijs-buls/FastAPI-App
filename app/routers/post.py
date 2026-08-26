@@ -41,7 +41,7 @@ def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db), get_cu
     return  new_post
 
 @router.get("/{id}", response_model=schemas.PostResponseWithVotes)
-def get_post(id: int, db: Session = Depends(get_db)):
+def get_post(id: int, db: Session = Depends(get_db), get_current_user: int = Depends(oauth2.get_current_user)):
    
     #cursor.execute("""SELECT * FROM post WHERE id = %s """, (str(id)))
     #post = cursor.fetchone()
