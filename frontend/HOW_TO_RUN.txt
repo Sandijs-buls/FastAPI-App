@@ -1,0 +1,4 @@
+Open index.html with Live Server (VS Code extension) or any static server on port 5500.
+Make sure the FastAPI backend is running at http://127.0.0.1:8000
+
+To remove this mock frontend entirely, delete this whole folder.
