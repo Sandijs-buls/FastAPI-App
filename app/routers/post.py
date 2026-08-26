@@ -92,6 +92,11 @@ def update_post(id: int, post: schemas.PostUpdate, db: Session = Depends(get_db)
     if posts == None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"post with id: {id} does not exist")
+
+    if posts.owner_id != get_current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail="Not authorized to perform requested action")
+
     post_query.update(post.dict(), synchronize_session=False)
     
     db.commit()

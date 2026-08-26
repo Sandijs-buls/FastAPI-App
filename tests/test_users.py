@@ -3,22 +3,7 @@ from app.main import app
 from app.config import settings
 from jose import jwt
 from app import schemas
-from .database import client, session
 import pytest
-
-
-@pytest.fixture()
-def test_user(client):
-    user_data = {"email" : "hello12@gmail.com", "password" : "1234"}
-    res = client.post("/users/", json=user_data)
-    assert res.status_code == 201
-
-    new_user = res.json()
-    new_user['password'] = user_data['password']
-    return new_user
-
-
-
 
 
 
@@ -45,3 +30,15 @@ def test_login_user( test_user, client):
     assert login_res.token_type == "bearer"
 
     assert response.status_code == 200
+
+@pytest.mark.parametrize("email, password, status_code", [
+    ("hello12@gmail.com", "1234", 200),
+    ("hello12@gmail.com", "wrongpass", 403),
+    ("wrongemail@gmail.com", "1234", 403)
+])
+def test_login_user_parametrized(test_user, client, email, password, status_code):
+    response = client.post("/login", data={"username": email, "password": password})
+    assert response.status_code == status_code
+
+
+
